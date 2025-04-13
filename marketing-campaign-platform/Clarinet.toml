@@ -1,0 +1,10 @@
+[project]
+name = "marketing-campaign-platform"
+authors = ["Hammed"]
+description = "Blockchain-based marketing campaign platform with smart contracts"
+telemetry = false
+requirements = []
+
+[contracts.marketing-campaign]
+path = "contracts/marketing-campaign.clar"
+depends_on = []
