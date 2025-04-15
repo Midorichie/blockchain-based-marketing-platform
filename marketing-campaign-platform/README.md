@@ -6,11 +6,21 @@ A decentralized platform for managing marketing campaigns using smart contracts 
 
 This platform enables advertisers to create marketing campaigns with automated budget allocation and performance-based rewards. The smart contracts ensure transparency and trust between advertisers and promoters.
 
-## Features
+## Architecture
 
-- Create campaigns with predefined budgets and performance benchmarks
+The platform consists of two main components:
+
+1. **Marketing Campaign Contract**: Manages campaign lifecycle, metrics, and rewards
+2. **Ad Provider Contract**: Handles authentication and trust scoring for campaign metrics providers
+
+## Key Features
+
+- Create campaigns with STX budget escrow
+- Manage authorized ad providers with trust scores
 - Track campaign metrics (impressions, clicks, conversions)
 - Automate reward distribution based on performance
+- Time-based campaign expiration and fund recovery
+- Security-focused role-based access control
 
 ## Setup & Installation
 
@@ -41,9 +51,20 @@ clarinet integrate
 
 ## Smart Contract Structure
 
-The platform consists of the following smart contracts:
+### Marketing Campaign Contract
 
-- `marketing-campaign.clar`: Core contract for campaign management
+Core contract that manages:
+- Campaign creation and funding
+- Performance metrics tracking
+- Reward distribution
+- Fund escrow and release
+
+### Ad Provider Contract
+
+Support contract that handles:
+- Provider registration and management
+- Trust scoring system
+- Provider authentication
 
 ## Development
 
@@ -61,12 +82,12 @@ Deploy to the testnet:
 clarinet deploy --testnet
 ```
 
-## Usage
+## Usage Examples
 
 ### Creating a Campaign
 
 ```clarity
-(contract-call? .marketing-campaign create-campaign u1000 u10000 u500 u50)
+(contract-call? .marketing-campaign create-campaign u1000 u10000 u500 u50 u10080)
 ```
 
 Parameters:
@@ -74,6 +95,27 @@ Parameters:
 - Impression goal
 - Click goal
 - Conversion goal
+- Duration (in blocks)
+
+### Registering an Ad Provider
+
+```clarity
+(contract-call? .ad-provider register-provider 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM "Analytics Provider")
+```
+
+Parameters:
+- Provider address
+- Provider name
+
+### Adding Provider to Campaign
+
+```clarity
+(contract-call? .marketing-campaign add-campaign-provider u1 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
+```
+
+Parameters:
+- Campaign ID
+- Provider address
 
 ### Updating Metrics
 
@@ -90,11 +132,20 @@ Parameters:
 ### Processing Rewards
 
 ```clarity
-(contract-call? .marketing-campaign process-rewards u1)
+(contract-call? .marketing-campaign process-rewards u1 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM)
 ```
 
 Parameters:
 - Campaign ID
+- Recipient address
+
+## Security Features
+
+- Role-based access control
+- Secure STX handling with escrow
+- Provider authentication and trust scoring
+- Time-based security measures
+- Input validation and error handling
 
 ## License
 
