@@ -7,4 +7,17 @@ requirements = []
 
 [contracts.marketing-campaign]
 path = "contracts/marketing-campaign.clar"
+depends_on = ["ad-provider"]
+
+[contracts.ad-provider]
+path = "contracts/ad-provider.clar"
 depends_on = []
+
+[repl.analysis]
+passes = ["check_checker"]
+
+[repl.analysis.check_checker]
+strict = true
+trusted_sender = false
+trusted_caller = false
+callee_filter = false
